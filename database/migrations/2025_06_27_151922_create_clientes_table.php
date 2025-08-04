@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nome');
             $table->string('sobrenome');
             $table->string('sexo');
-            $table->string('cpf_cnpj')->unique();
+            $table->string('cpf_cnpj');
             $table->string('telefone')->nullable();
             $table->string('email')->nullable();
             $table->string('cep')->nullable();

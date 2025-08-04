@@ -26,6 +26,31 @@ class ContratoController extends Controller
         return response()->json(['contratos' => $contratos]);
     }
 
+    public function filter(Request $request)
+    {
+        $query = Contrato::query();
+
+        if ($request->filled('chave')) {
+            $query->where('contrato_hash', 'like', '%' . $request->chave . '%');
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('dtvenc')) {
+            $data = Carbon::createFromFormat('d/m/y', $request->dtvenc);
+            // return response()->json(['data' => $data]);
+            $query->whereDate('dtvenc', $data);
+        }
+
+        $contratos = $query->with('cliente')
+            ->orderBy('dtvenc', 'asc') // ordena do mais recente ao mais antigo
+            ->get();
+
+        return response()->json(['contratos' => $contratos]);
+    }
+
 
     public function store(Request $request)
     {
@@ -223,4 +248,24 @@ class ContratoController extends Controller
         return response()->json(['message' => 'Contrato marcado como vencido com sucesso.', 'contrato' => $contrato]);
     }
 
+    public function uploadAssinaContrato(Request $request, $id)
+    {
+        $request->validate([
+            'contrato_id' => 'required|exists:contratos,id',
+            'file' => 'required|file|mimes:pdf,jpg,jpeg,png',
+        ]);
+
+        $contrato = Contrato::find($request->contrato_id);
+
+        if ($request->hasFile('file')) {
+            $path = $request->file('file')->store('contratos_assinados', 'public');
+            $contrato->doc_ass = $path;
+            $contrato->save();
+        }
+
+        return response()->json([
+            'message' => 'Arquivo enviado com sucesso!',
+            'contrato' => $contrato,
+        ]);
+    }
 }

@@ -38,7 +38,10 @@ Route::post('/users/edit', [UserController::class, 'edit'])->middleware('auth:sa
 // Clientes
 Route::get('/clientes', [ClienteController::class, 'index'])->middleware('auth:sanctum');
 Route::get('/clientes/{id}', [ClienteController::class, 'client'])->middleware('auth:sanctum');
+Route::post('/clientes/{id}', [ClienteController::class, 'edit'])->middleware('auth:sanctum');
+Route::post('/clientes/address/{id}', [ClienteController::class, 'editAddress'])->middleware('auth:sanctum');
 Route::post('/clientes', [ClienteController::class, 'store'])->middleware('auth:sanctum');
+Route::post('/clientes/filter', [ClienteController::class, 'filter'])->middleware('auth:sanctum');
 
 // Tipos de Bem
 Route::get('/tipo_bems', [TipoBemController::class, 'index'])->middleware('auth:sanctum');
@@ -61,6 +64,8 @@ Route::post('/bems', [BemController::class, 'store'])->middleware('auth:sanctum'
 //Contrato
 Route::get('/contratos', [ContratoController::class, 'index'])->middleware('auth:sanctum');
 Route::post('/contratos', [ContratoController::class, 'store'])->middleware('auth:sanctum');
+Route::post('/contratos/upload/{id}', [ContratoController::class, 'uploadAssinaContrato'])->middleware('auth:sanctum');
+Route::post('/contratos/filter', [ContratoController::class, 'filter'])->middleware('auth:sanctum');
 Route::post('/contratos/ativa/{id}', [ContratoController::class, 'ativa'])->middleware('auth:sanctum');
 Route::post('/contratos/finaliza/{id}', [ContratoController::class, 'finaliza'])->middleware('auth:sanctum');
 Route::post('/contratos/inadimplente/{id}', [ContratoController::class, 'inadimplente'])->middleware('auth:sanctum');
