@@ -157,7 +157,7 @@ class ContratoController extends Controller
         $transaction = new Transaction();
         $transaction->tipo = "Saida";
         $transaction->valor = $contrato->valor_emprestimo;
-        $transaction->desc = "Empréstimo no valor de R$ {$valorFormatado} do contrato #{$contrato->contrato_hash} para o cliente {$contrato->cliente->nome} {$contrato->cliente->sobrenome}.";
+        $transaction->desc = "Compra de bem no valor de R$ {$valorFormatado} do contrato #{$contrato->contrato_hash} - cliente {$contrato->cliente->nome} {$contrato->cliente->sobrenome}.";
         $transaction->contrato_id = $contrato->id;
         $transaction->save();
 
