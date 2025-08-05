@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -48,7 +49,10 @@ class UserController extends Controller
         $user->lastname = $request->lastname;
 
         if ($request->hasFile('foto')) {
-            $path = $request->file('foto')->store('users', 'public');
+            $file = $request->file('foto');
+            $extension = $file->getClientOriginalExtension();
+            $filename = Str::random(40) . '.' . $extension;
+            $path = $file->storeAs('users', $filename, 'public');
             $user->foto = $path;
         }
 

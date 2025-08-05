@@ -251,14 +251,17 @@ class ContratoController extends Controller
     public function uploadAssinaContrato(Request $request, $id)
     {
         $contrato = Contrato::find($id);
-        if (!$request->hasFile('file') || !$request->file('file')->isValid()) {
-    return response()->json(['message' => 'Arquivo inválido.'], 400);
-}
 
-$filePath = $request->file('file')->store('modelos_contratos', 'public');
+        if (!$request->hasFile('file') || !$request->file('file')->isValid()) {
+            return response()->json(['message' => 'Arquivo inválido.'], 400);
+        }
+
+        $filePath = $request->file('file')->store('modelos_contratos', 'public');
 
         $contrato->assinado_path = $filePath;
         $contrato->save();
+
+        $contrato->load('bem');
 
         return response()->json([
             'message' => 'Arquivo enviado com sucesso!',
