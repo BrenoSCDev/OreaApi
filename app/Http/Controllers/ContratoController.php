@@ -230,7 +230,7 @@ class ContratoController extends Controller
         $transaction = new Transaction();
         $transaction->tipo = "Prolongamento de Contrato";
         $transaction->valor = $contrato->valor_recebido;
-        $transaction->desc = "Contrato #{$contrato->contrato_hash} pelo cliente {$contrato->cliente->nome} {$contrato->cliente->sobrenome} pelo motivo de que {$request->desc}. Nova data de vencimento é: {$dataFormatada}. Multa pago no valor de ${valorFormatado}.";
+        $transaction->desc = "Contrato #{$contrato->contrato_hash} pelo cliente {$contrato->cliente->nome} {$contrato->cliente->sobrenome} pelo motivo de que {$request->desc}. Nova data de vencimento é: {$dataFormatada}. Multa pago no valor de R$ ${valorFormatado}.";
         $transaction->contrato_id = $contrato->id;
         $transaction->save();
 
