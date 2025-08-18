@@ -218,16 +218,19 @@ class ContratoController extends Controller
         $formattedDate = Carbon::createFromFormat('d/m/y', $dtvenc);
         $contrato->dtvenc = $formattedDate;
 
-        $contrato->valor_receber = (($contrato->valor_receber * $request->multa) / 100) + $contrato->valor_receber;
+        $multa = ($contrato->valor_receber * $request->multa) / 100;
+        $saldo = Saldo::first();
+        $saldo->valor = $saldo->valor + $multa;
+        $saldo->save();
         $contrato->save();
 
-        $valorFormatado = number_format($contrato->valor_receber, 2, ',', '.');
+        $valorFormatado = number_format($multa, 2, ',', '.');
         $dataFormatada = $formattedDate->format('d/m/Y');
 
         $transaction = new Transaction();
         $transaction->tipo = "Prolongamento de Contrato";
         $transaction->valor = $contrato->valor_recebido;
-        $transaction->desc = "Contrato #{$contrato->contrato_hash} prolongado no valor de R$ {$valorFormatado} pelo cliente {$contrato->cliente->nome} {$contrato->cliente->sobrenome} pelo motivo de que {$request->desc}. Nova data de vencimento é: {$dataFormatada}.";
+        $transaction->desc = "Contrato #{$contrato->contrato_hash} pelo cliente {$contrato->cliente->nome} {$contrato->cliente->sobrenome} pelo motivo de que {$request->desc}. Nova data de vencimento é: {$dataFormatada}. Multa pago no valor de ${valorFormatado}.";
         $transaction->contrato_id = $contrato->id;
         $transaction->save();
 
