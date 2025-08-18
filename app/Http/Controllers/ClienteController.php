@@ -56,6 +56,10 @@ class ClienteController extends Controller
         $cliente->cpf_cnpj = $request->cpf_cnpj;
         $cliente->telefone = $request->telefone;
         $cliente->email = $request->email;
+        $cliente->rg = $request->rg;
+        $cliente->estado_civil = $request->estado_civil;
+        $cliente->nacionalidade = $request->nacionalidade;
+        $cliente->profissao = $request->profissao;
 
         if ($request->hasFile('foto')) {
             $path = $request->file('foto')->store('clientes', 'public');
