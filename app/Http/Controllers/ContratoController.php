@@ -209,6 +209,33 @@ class ContratoController extends Controller
         return response()->json(['contrato' => $contrato], 200);
     }
 
+    public function cancela($id, Request $request)
+    {
+        $contrato = Contrato::findOrFail($id);
+
+        $transaction = new Transaction();
+        $transaction->tipo = "Cancelamento de Contrato";
+        $transaction->desc = "Contrato #{$contrato->contrato_hash} do cliente {$contrato->cliente->nome} {$contrato->cliente->sobrenome} foi cancelado.";
+        $transaction->save();
+
+        if ($contrato->status !== "Aguardando Aprovação") {
+            $saldo = Saldo::first();
+            $saldo->valor += $contrato->valor_emprestimo;
+            $saldo->save();
+        }
+
+        if ($contrato->bem) {
+            $contrato->bem->contrato_id = null;
+            $contrato->bem->save();
+        }
+
+        $contrato->transactions()->update(['contrato_id' => null]);
+
+        $contrato->delete();
+
+        return response()->json(['msg' => 'Contrato cancelado com sucesso!'], 200);
+    }
+
     public function prolonga($id, Request $request)
     {
         $contrato = Contrato::find($id);

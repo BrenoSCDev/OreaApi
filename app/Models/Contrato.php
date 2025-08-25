@@ -18,4 +18,9 @@ class Contrato extends Model
     {
         return $this->hasOne(Bem::class);
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

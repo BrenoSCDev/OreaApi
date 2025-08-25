@@ -68,6 +68,7 @@ Route::post('/contratos/upload/{id}', [ContratoController::class, 'uploadAssinaC
 Route::post('/contratos/filter', [ContratoController::class, 'filter'])->middleware('auth:sanctum');
 Route::post('/contratos/ativa/{id}', [ContratoController::class, 'ativa'])->middleware('auth:sanctum');
 Route::post('/contratos/finaliza/{id}', [ContratoController::class, 'finaliza'])->middleware('auth:sanctum');
+Route::post('/contratos/cancela/{id}', [ContratoController::class, 'cancela'])->middleware('auth:sanctum');
 Route::post('/contratos/inadimplente/{id}', [ContratoController::class, 'inadimplente'])->middleware('auth:sanctum');
 Route::post('/contratos/prolonga/{id}', [ContratoController::class, 'prolonga'])->middleware('auth:sanctum');
 Route::put('/contratos/{id}/vencido', [ContratoController::class, 'marcarComoVencido']);
